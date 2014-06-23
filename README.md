@@ -46,6 +46,12 @@ If you have ever used MySQL, PostgreSQL, MS-SQL or another database engine, you 
 
 SQLite commands are terminated with a semicolon, **;**
 
+###Running a particular Query _(SOURCE query1.sql, \i query1.sql)_
+
+This is useful if you want to write and edit queries in a text editor.
+
+`sqlite> .read query1.sql`
+
 ###Choosing an active database schema _(USE my-database, SET SCHEMA my-database)_
 
 You may either give the file name to the database as an argument when opening the program, or use the `.open` command:
