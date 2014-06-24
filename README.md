@@ -38,7 +38,7 @@ SQLite is a lightweight, open source (public domain) database engine that has no
 
 If you have ever used MySQL, PostgreSQL, MS-SQL or another database engine, you will learn that SQLite has some idiosyncrasies, as all database engines do. This [Comparison of different SQL implementations](http://troels.arvin.dk/db/rdbms/) can help you translate features between different databases if you are not using SQLite.
 
-
+Below are a list of SQLite commands you can use from the command line tool, `sqlite3`, followed by a similar command in MySQL and PostgreSQL.
 
 ###SQL
 
@@ -46,13 +46,15 @@ If you have ever used MySQL, PostgreSQL, MS-SQL or another database engine, you 
 
 SQLite commands are terminated with a semicolon, **;**
 
-###Running a particular Query _(SOURCE query1.sql, \i query1.sql)_
+###Running a Query in a File
 
 This is useful if you want to write and edit queries in a text editor.
 
 `sqlite> .read query1.sql`
 
-###Choosing an active database schema _(USE my-database, SET SCHEMA my-database)_
+MySQL/pgSQL: _(SOURCE query1.sql, \i query1.sql)_
+
+###Choosing an active Database Schema 
 
 You may either give the file name to the database as an argument when opening the program, or use the `.open` command:
  
@@ -60,17 +62,23 @@ You may either give the file name to the database as an argument when opening th
 
 `sqlite> .open my-database.db`
 
-###Get a list of tables _(SHOW TABLES, /dt, INFORMATION_SCHEMA TABLES)_
+MySQL/pgSQL: _(USE my-database, SET SCHEMA my-database)_
+
+###Get a list of tables 
 
 `sqlite> .tables`
 
 `sqlite> .tables my%` (only show tables LIKE pattern 'my%')
 
-###Get a table description _(DESCRIBE my-table, /d my-table, SP_HEPLP my-table)_
+MySQL/pgSQL: _(SHOW TABLES, /dt, INFORMATION_SCHEMA TABLES)_
+
+###Get a table description 
 
 `sqlite> .schema my-table` (where my-table is the table being described)
 
 `sqlite> .schema` (describe all tables)
+
+MySQL/pgSQL: _(DESCRIBE my-table, /d my-table, SP_HEPLP my-table)_
 
 ###Exit the command line, Quit SQLite
 
