@@ -1,0 +1,1 @@
+-- Show a list of cadets who fought in battle 18 and their hit statistics, if any.
