@@ -11,6 +11,18 @@ Essentially, SQL is a standardized way of asking for information. Several databa
 
 For the first several chapters of this series, you will use SQLite, which runs on all major operating systems as a simple executable file, and reads ordinary files that hold the database schemas and data. It is much easier to install than any other RDBMS and it will serve to help us learn SQL syntax. If you already have access to a database sever, there are some commands that will work slightly differently. See the "SQLite Quirks" section below.
 
+
+#How to use this guide
+
+1. Clone the repo to your system.
+2. Install SQLite on your system. See "Installing SQLite" in this file for instructions.
+3. Each "chapter" of this series is in a separate folder. Open the folder and look at its contents.
+4. Read the `outline.md`, this contains the lesson transcript and instructions for the lesson.
+5. Open the database for that chapter from the command line, using `sqlite3 example.db` or the equivalent from the instructions.
+6. Write queries on the sqlite console, or write them in a separate file with an editor, and run them using the `.read file.sql` command, or the equivalent for your file name.
+7. Read and complete the Code Challenge section at the end of the outline. You are encouraged to experiment, write new records to the database, and play with queries and data.
+8. If you write over the data to the point where examples are not usable, there is a folder called `create` in each chapter which can rebuild the database.
+
 ##Installing SQLite
 
 SQLite is a lightweight, open source (public domain) database engine that has no server. Therefore, all you need is a copy of the sqlite3 executable and a database file to get started.
