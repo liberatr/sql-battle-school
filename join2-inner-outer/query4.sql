@@ -1,1 +1,1 @@
--- Show a list of all armies and any battles they fought in the week of December 5th, 2032.
+-- Show a list of cadets who fought in battles from September 4th to 11th, 2032 and the cadet who froze them, if any.

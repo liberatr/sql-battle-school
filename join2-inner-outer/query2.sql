@@ -1,6 +1,6 @@
--- Show the first 10 battles by Dragon Army, and if Andrew Wiggin fought in them, show his battle info.
-SELECT battle.id, battle.date, battle.winner, cadet.name, cadet_battle.frozen, cadet_battle.num_frozen, cadet_battle.frozen_by, cadet_battle.shots, cadet_battle.toon_id, cadet_battle.mvp
-FROM battle, LEFT OUTER JOIN cadet_battle ON cadet_battle.battle_id = battle.id, JOIN cadet ON cadet.id = cadet_battle.cadet_id
-WHERE army1_id = 1 OR army2_id = 1 AND cadet_battle.cadet_id = 1  
-ORDER BY battle.date
-LIMIT 10; 
+-- Show a list of cadets and the names of cadets who froze them in battle.
+SELECT c1.cadet_id, c1.name, c1.army_id, cb.battle_id, cb.hits_taken, c2.name, c2.army_id  
+FROM cadet AS c1 JOIN cadet_battle AS cb ON cb.cadet_id = c1.cadet_id LEFT JOIN cadet AS c2 ON c2.cadet_id = cb.frozen_by_id  
+WHERE c1.name IS NOT NULL  
+ORDER BY c1.army_id  
+LIMIT 20;

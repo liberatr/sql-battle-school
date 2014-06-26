@@ -1,7 +1,7 @@
 Joins: Inner vs. Outer Joins
 ============================
 
-This lesson builds on the previous lesson about joins, introducing the Outer Join concept. The database uses a "Battle School" as the example.
+Welcome to Part 2 of the lesson on database joins with SQL. This lesson builds on the previous lesson about joins, introducing the Outer Join concept. The database uses a "Battle School" as the example.
 
 #Overview
 
@@ -12,74 +12,101 @@ This lesson builds on the previous lesson about joins, introducing the Outer Joi
 
 ##What is an Outer Join for?
 
+Let's talk again about the Principle of *Normalization*. In our last example, we say how a Join can bring our data back together after we split it into tables using Normalization. One reason for Normalization is so we don't have bunches of NULL columns in rows where that information is not relevant. However, when we join tables together, there is more than one way to do that.
+
+If you look at a Venn Diagram of two tables A and B using the default Join, or *Inner Join*,  you see that the default join only shows data where the two circles overlap.
+
+What this means is that the table on the left may have lots of rows that match our WHERE clause, but the conditions of the Inner Join are preventing them from being returned. That's where the *Outer Join* comes in. The Outer Join allows us to include matching rows from the table on the left, without a corresponding row on the right. That's why an Outer join can also be referred to as a *Left Join*.
+
 * Show all of A, and include B if it exists, matching on a condition.  
   *e.g. "Show a list of all cadets and awards they have won, if any."*
 * Inner Joins include just those rows that match. Even if some rows from table A meet the criteria, an Inner Join would not include them unless there is a corresponding row in table B.  
   *e.g. an Inner Join would ONLY show cadets who have won awards*
 * Outer Joins include all matching rows from the table on the Left; a match on the Right is not needed.  
   *i.e. All cadets will be shown, their awards only appear if they exist.*
+* If there are no NULL values on the key to the join, there will be no difference between Inner and Outer Join.
 * The most common type of Outer Join is a Left Join. SQLite only implements a Left Outer Join.
 * You may use `LEFT JOIN` and `LEFT OUTER JOIN` interchangeably in SQLite.  
-* Inner Joins can be reordered without affecting the results, but for Outer Joins the ordering of the tables matters.  
+* The Left and Right tables in Inner Joins can be reordered without affecting the results, but for Outer Joins the ordering of the tables matters.  
   *i.e. Placing awards on the Left would mean all awards were included, not all Cadets.*
 * In a Left join, you want to use the ON or USING syntax. If you use WHERE, you may omit rows.  
   *i.e. If a row in the `award` table is NULL, its `cadet_id` cannot be equal to an `id` in the `cadet` table.*
 
 ##Live demo
 
-1. **Show a list of 10 cadets and awards they have won, if any.**
+In this section, we will re-visit our systematic approach to writing queries, adding a rule for Outer Joins.
+
+1. Open the `join2.db` from the folder `join2-outer-inner`.  
+  `$ cd join2-outer-inner`  
+  `$ sqlite3 join2.db`
+2. List the available tables, and get a schema description for the `cadet` and `award` table.
+  `sqlite3> .tables`
+  `sqlite3> .schema cadet`
+  `sqlite3> .schema award`
+3. Plan your queries.
+
+Remember that we have a system for writing a query: choose the tables (including the joins), the WHERE clause, the fields to SELECT, the ORDER BY and a LIMIT.
+
+When doing an Outer Join, we need to remember to use the ON condition when we specify a table to join.
+
+Here are two example queries broken down in this manner:
+
+1. **Show a list of cadets and awards they have won, if any.**
   1. Decide which table to select FROM, and which table to LEFT JOIN.  
     `cadet` and `award`
   2. Make sure you place the table with potential NULL columns on the Right.  
     `award` may not have rows for every `cadet`, or may have multiple matches for one `cadet`.
   3. Remember to use the ON or USING keywords to specify the conditions for the LEFT JOIN. 
-    `FROM cadet, LEFT OUTER JOIN award ON award.cadet_id = cadet.id` 
+    `FROM cadet, LEFT OUTER JOIN award ON award.cadet_id = cadet.cadet_id` 
   4. Specify the WHERE clause(s).  
     `WHERE cadet.name IS NOT NULL` i.e. show all Cadets
   5. Decide which field(s) to SELECT. 
-    `SELECT cadet.id, cadet.name, cadet.callsign, award.name`  
+    `SELECT cadet.cadet_id, cadet.name, cadet.callsign, award.name`  
   6. Decide which field(s) to ORDER BY.  
     `ORDER BY cadet.name`
-  7. Write out the whole query in `query1.sql` and add a LIMIT of 10:  
+  7. Write out the whole query in `query1.sql` and add a LIMIT of 20:  
     ```
-    SELECT cadet.id, cadet.name, cadet.callsign, award.name  
-    FROM cadet, LEFT OUTER JOIN award ON award.cadet_id = cadet.id  
+    SELECT cadet.cadet_id, cadet.name, cadet.callsign, award.name  
+    FROM cadet LEFT OUTER JOIN award ON award.cadet_id = cadet.cadet_id  
     WHERE cadet.name IS NOT NULL  
     ORDER BY cadet.name
-    LIMIT 10;  
+    LIMIT 20;
     ```
   8. Open the join2.db and load `query1.sql` then review the results.
     ```
     $ sqlite3 join2.db
     sqlite> .read query1.sql
     ```
-2. **Show the first 10 battles by Dragon Army, and if Andrew Wiggin fought in them, show his battle info.**
+2. **Show a list of cadets and the names of cadets who froze them in battle.**
   1. Decide which table to select FROM, and which table to LEFT JOIN.  
-    `battle`, `cadet_battle`, and `cadet`
+    `cadet`, `cadet_battle`, and `cadet`  
+    *We will need aliases to write this query*
   2. Make sure you place the table with potential NULL columns on the Right.  
-    `cadet_battle` may not have rows for every `battle`, and we only care about the statistics of one particular `cadet`.
+    If there is a NULL in `frozen_by_id` there will be no match in `cadet` when we join, we must make sure this table uses LEFT OUTER JOIN.
   3. Remember to use the ON or USING keywords to specify the conditions for the LEFT JOIN. 
-    `FROM battle, LEFT OUTER JOIN cadet_battle ON cadet_battle.battle_id = battle.id, JOIN cadet ON cadet.id = cadet_battle.cadet_id` 
+    `FROM cadet AS c1 JOIN cadet_battle AS cb ON cb.cadet_id = c1.cadet_id LEFT OUTER JOIN cadet AS c2 ON c2.cadet_id = cb.frozen_by_id` 
   4. Specify the WHERE clause(s).  
-    `WHERE army1_id = 1 OR army2_id = 1 AND cadet_battle.cadet_id = 1` i.e. show battles by Dragon Army and with cadet Andrew Wiggin
+    `WHERE c1.name IS NOT NULL` i.e. show battles by Dragon Army and with cadet Andrew Wiggin
   5. Decide which field(s) to SELECT. 
-    `SELECT battle.id, battle.date, battle.winner, cadet.name, cadet_battle.frozen, cadet_battle.num_frozen, cadet_battle.frozen_by, cadet_battle.shots, cadet_battle.toon_id, cadet_battle.mvp`  
+    `SELECT c1.cadet_id, c1.name, c1.army_id, cb.battle_id, cb.hits_taken, c2.name, c2.army_id`  
   6. Decide which field(s) to ORDER BY.  
-    `ORDER BY battle.date`
-  7. Write out the whole query in `query2.sql` and add a LIMIT of 10:  
+    `ORDER BY c1.army_id`
+  7. Write out the whole query in `query2.sql` and add a LIMIT of 20:  
   
     ```
-    SELECT battle.id, battle.date, battle.winner, cadet.name, cadet_battle.frozen, cadet_battle.num_frozen, cadet_battle.frozen_by, cadet_battle.shots, cadet_battle.toon_id, cadet_battle.mvp
-    FROM battle, LEFT OUTER JOIN cadet_battle ON cadet_battle.battle_id = battle.id, JOIN cadet ON cadet.id = cadet_battle.cadet_id
-    WHERE army1_id = 1 OR army2_id = 1 AND cadet_battle.cadet_id = 1  
-    ORDER BY battle.date
-    LIMIT 10;  
+    SELECT c1.cadet_id, c1.name, c1.army_id, cb.battle_id, cb.hits_taken, c2.name, c2.army_id  
+    FROM cadet AS c1 JOIN cadet_battle AS cb ON cb.cadet_id = c1.cadet_id LEFT JOIN cadet AS c2 ON c2.cadet_id = cb.frozen_by_id  
+    WHERE c1.name IS NOT NULL  
+    ORDER BY c1.army_id  
+    LIMIT 20;
     ```
+    
   8. Open the join2.db and load `query2.sql` then review the results.
     ```
     $ sqlite3 join2.db
     sqlite> .read query2.sql
     ```
+   
     
 ##Syntax review
 
@@ -96,5 +123,9 @@ This lesson builds on the previous lesson about joins, introducing the Outer Joi
 
 Edit `query3.sql` and `query4.sql` files, and write a query to find the following:
 
-1. Show a list of cadets who fought in battle 18 and their hit statistics, if any.
-2. Show a list of all armies and any battles they fought in the week of December 5th, 2032.
+1. Show a list of cadets and their awards, and show the name and date of the battle it was awarded for, if any.
+2. Show a list of cadets who fought in battles from September 4th to 11th, 2032 and the cadet who froze them, if any.
+
+##Coming Up
+
+In our next tutorial, we will cover the concept of GROUP BY and functions like COUNT() MIN() SUM() and AVG()

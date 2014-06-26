@@ -1,1 +1,1 @@
--- Show a list of cadets who fought in battle 18 and their hit statistics, if any.
+-- Show a list of cadets and their awards, and show the name and date of the battle it was awarded for, if any.

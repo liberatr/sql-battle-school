@@ -64,7 +64,7 @@ You may either give the file name to the database as an argument when opening th
 
 MySQL/pgSQL: _(USE my-database, SET SCHEMA my-database)_
 
-###Get a list of tables 
+###Get a list of Tables 
 
 `sqlite> .tables`
 
@@ -72,7 +72,7 @@ MySQL/pgSQL: _(USE my-database, SET SCHEMA my-database)_
 
 MySQL/pgSQL: _(SHOW TABLES, /dt, INFORMATION_SCHEMA TABLES)_
 
-###Get a table description 
+###Get a Table description 
 
 `sqlite> .schema my-table` (where my-table is the table being described)
 
@@ -92,4 +92,7 @@ For a listing of the available dot commands, you can enter `.help` at any time.
 
 `sqlite> .help`
 
-Also view the [Command Line Shell For SQLite](http://www.sqlite.org/cli.html) guide.
+###Additional Resources
+
+* [Command Line Shell For SQLite](http://www.sqlite.org/cli.html)
+* [Datatypes in SQLite Version 3](http://www.sqlite.org/datatype3.html)
