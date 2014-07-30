@@ -12,13 +12,15 @@ Welcome to Part 2 of the lesson on database joins with SQL. This lesson builds o
 
 ##What is an Outer Join for?
 
+If one of your tables references another and allows NULL keys, you may need an Outer Join to get all the records you selected.
+
 Let's talk again about the Principle of *Normalization*. In our last example, we say how a Join can bring our data back together after we split it into tables using Normalization. One reason for Normalization is so we don't have bunches of NULL columns in rows where that information is not relevant. However, when we join tables together, there is more than one way to do that.
 
 If you look at a Venn Diagram of two tables A and B using the default Join, or *Inner Join*,  you see that the default join only shows data where the two circles overlap.
 
 What this means is that the table on the left may have lots of rows that match our WHERE clause, but the conditions of the Inner Join are preventing them from being returned. That's where the *Outer Join* comes in. The Outer Join allows us to include matching rows from the table on the left, without a corresponding row on the right. That's why an Outer join can also be referred to as a *Left Join*.
 
-* Show all of A, and include B if it exists, matching on a condition.  
+* Show all of A, and include B if it exists, matching on a condition, given with the ON statement.  
   *e.g. "Show a list of all cadets and awards they have won, if any."*
 * Inner Joins include just those rows that match. Even if some rows from table A meet the criteria, an Inner Join would not include them unless there is a corresponding row in table B.  
   *e.g. an Inner Join would ONLY show cadets who have won awards*
@@ -29,8 +31,20 @@ What this means is that the table on the left may have lots of rows that match o
 * You may use `LEFT JOIN` and `LEFT OUTER JOIN` interchangeably in SQLite.  
 * The Left and Right tables in Inner Joins can be reordered without affecting the results, but for Outer Joins the ordering of the tables matters.  
   *i.e. Placing awards on the Left would mean all awards were included, not all Cadets.*
-* In a Left join, you want to use the ON or USING syntax. If you use WHERE, you may omit rows.  
+* In a Left join, you want to use the ON or USING syntax. If you use WHERE, you may unintentionally omit rows.  
   *i.e. If a row in the `award` table is NULL, its `cadet_id` cannot be equal to an `id` in the `cadet` table.*
+
+##Procedure: SQL SELECT
+
+This is a review of our earlier procedure to write an SQL SELECT statement, revised to help us write queries that use an Outer Join.
+
+1. Which tables to select FROM?
+2. Which to LEFT JOIN?  Table with possible NULL rows on the Right.
+3. Instead of WHERE, use ON or USING.
+4. Specify the WHERE clause.
+5. Decide which fields to SELECT.
+6. Decide which fields to ORDER BY.
+7. Add a LIMIT.
 
 ##Live demo
 
@@ -110,6 +124,24 @@ Here are two example queries broken down in this manner:
     
 ##Syntax review
 
+###Outer Join
+```
+SELECT * FROM {table_A} LEFT OUTER JOIN {table_B} ON {condition} WHERE ...;
+```
+
+* Join these tables based on the condition given after `ON`.
+* A Left Join *must* use the `ON` or `USING` syntax.
+* The “Left” table includes rows that may not exist in the “Right” table.
+* Order of tables matters.
+* LEFT JOIN and LEFT OUTER JOIN are synonymous in SQLite.
+* The most common type of Outer Join is a Left Outer Join.
+* *Outer Join* - all rows that match A, and and any that correspond in B.
+* *Inner Join* - only rows that match A and B.
+* If there are no NULL keys in A, the same records are returned from INNER and OUTER join.
+
+
+###Procedure to write an Outer Join Query
+
 1. Decide which table to select FROM, and which table to LEFT JOIN.
 2. Make sure you place the table with potential NULL columns on the Right.
 3. Remember to use the ON or USING keywords to specify the conditions for the LEFT JOIN.
@@ -125,6 +157,46 @@ Edit `query3.sql` and `query4.sql` files, and write a query to find the followin
 
 1. Show a list of cadets and their awards, and show the name and date of the battle it was awarded for, if any.
 2. Show a list of cadets who fought in battles from September 4th to 11th, 2032 and the cadet who froze them, if any.
+
+Open the join2.db and load `query3.sql` then review the results.
+```
+$ sqlite3 join2.db
+sqlite> .read query3.sql
+```
+
+###Tables 
+
+Here is a visual diagram of the database tables and some of their fields, seen in `join2.db`.
+
+For a fully detailed version, see `cadet.sql` in the `create` folder inside this example.
+
+* cadet
+  * cadet_id
+  * name
+  * army_id
+  * [...]
+* cadet_battle
+  * cadet_battle_id
+  * cadet_id
+  * battle_id
+  * frozen_by_id
+  * [...]
+* battle
+  * battle_id
+  * fought
+  * army1_id
+  * army2_id
+  * [...]
+* army
+  * army_id
+  * name
+  * commander
+  * [...]
+* award
+  * award_id
+  * cadet_id
+  * battle_id
+  * [...]
 
 ##Coming Up
 
