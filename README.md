@@ -17,7 +17,7 @@ For the first several chapters of this series, you will use SQLite, which runs o
 1. Clone the repo to your system.
 2. Install SQLite on your system. See "Installing SQLite" in this file for instructions.
 3. Each "chapter" of this series is in a separate folder. Open the folder and look at its contents.
-4. Read the `outline.md`, or the `slides.pdf`, which contain the lesson transcript and instructions for the lesson.
+4. Read the `README.md`, or the `slides.pdf` in the lesson folder, which contain the lesson transcript and instructions for the lesson.
 5. Open the database for that chapter from the command line, using `sqlite3 example.db` or the equivalent from the instructions.
 6. Write queries on the sqlite console, or write them in a separate file with an editor, and run them using the `.read file.sql` command, or the equivalent for your file name.
 7. Read and complete the Code Challenge section at the end of the outline. You are encouraged to experiment, write new records to the database, and play with queries and data.
