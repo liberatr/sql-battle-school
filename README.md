@@ -3,6 +3,10 @@ sql-battle-school
 
 Supplimental files for a SQL tutorial using SQLite. The database uses a "Battle School" from the novel "Ender's Game".
 
+# Lessons
+
+1. [Joins: Inner vs. Outer Joins](join2-inner-outer)
+
 # What is SQL?
 
 SQL stands for Structured Query Language.
