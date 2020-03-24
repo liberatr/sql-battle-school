@@ -3,14 +3,16 @@ Joins: Inner vs. Outer Joins
 
 Welcome to Part 2 of the lesson on database joins with SQL. This lesson builds on the previous lesson about joins, introducing the Outer Join concept. The database uses a "Battle School" as the example.
 
-#Overview
+[There is also a slideshow in this directory.](slides.pdf)
+
+# Overview
 
 1. What is an Outer Join for?
 2. Live demo
 3. Syntax review
 4. Code challenge
 
-##What is an Outer Join for?
+## What is an Outer Join for?
 
 If one of your tables references another and allows NULL keys, you may need an Outer Join to get all the records you selected.
 
@@ -34,7 +36,7 @@ What this means is that the table on the left may have lots of rows that match o
 * In a Left join, you want to use the ON or USING syntax. If you use WHERE, you may unintentionally omit rows.  
   *i.e. If a row in the `award` table is NULL, its `cadet_id` cannot be equal to an `id` in the `cadet` table.*
 
-##Procedure: SQL SELECT
+## Procedure: SQL SELECT
 
 This is a review of our earlier procedure to write an SQL SELECT statement, revised to help us write queries that use an Outer Join.
 
@@ -46,7 +48,7 @@ This is a review of our earlier procedure to write an SQL SELECT statement, revi
 6. Decide which fields to ORDER BY.
 7. Add a LIMIT.
 
-##Live demo
+## Live demo
 
 In this section, we will re-visit our systematic approach to writing queries, adding a rule for Outer Joins.
 
@@ -122,9 +124,9 @@ Here are two example queries broken down in this manner:
     ```
    
     
-##Syntax review
+## Syntax review
 
-###Outer Join
+### Outer Join
 ```
 SELECT * FROM {table_A} LEFT OUTER JOIN {table_B} ON {condition} WHERE ...;
 ```
@@ -140,7 +142,7 @@ SELECT * FROM {table_A} LEFT OUTER JOIN {table_B} ON {condition} WHERE ...;
 * If there are no NULL keys in A, the same records are returned from INNER and OUTER join.
 
 
-###Procedure to write an Outer Join Query
+### Procedure to write an Outer Join Query
 
 1. Decide which table to select FROM, and which table to LEFT JOIN.
 2. Make sure you place the table with potential NULL columns on the Right.
@@ -151,7 +153,7 @@ SELECT * FROM {table_A} LEFT OUTER JOIN {table_B} ON {condition} WHERE ...;
 7. Add a LIMIT.
 
 
-##Code challenge
+## Code challenge
 
 Edit `query3.sql` and `query4.sql` files, and write a query to find the following:
 
@@ -164,7 +166,7 @@ $ sqlite3 join2.db
 sqlite> .read query3.sql
 ```
 
-###Tables 
+### Tables 
 
 Here is a visual diagram of the database tables and some of their fields, seen in `join2.db`.
 
@@ -198,6 +200,6 @@ For a fully detailed version, see `cadet.sql` in the `create` folder inside this
   * battle_id
   * [...]
 
-##Coming Up
+## Coming Up
 
 In our next tutorial, we will cover the concept of GROUP BY and functions like COUNT() MIN() SUM() and AVG()
