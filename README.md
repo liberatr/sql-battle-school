@@ -5,7 +5,7 @@ Supplimental files for a SQL tutorial using SQLite. The database uses a "Battle 
 
 # Lessons
 
-1. [Joins: Inner vs. Outer Joins](join2-inner-outer)
+1. [Joins: Inner vs. Outer Joins](join2-inner-outer) ([slides](join2-inner-outer/slides.pdf))
 
 # What is SQL?
 
